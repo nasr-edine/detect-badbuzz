@@ -1,0 +1,8 @@
+# Machine learning libraries
+scikit-learn
+
+nltk
+unidecode
+spacy
+joblib
+flask
