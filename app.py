@@ -16,12 +16,14 @@ def predict():
         # Preprocess the tweet
         tweet = preprocess_text(tweet)
 
-        # Load the vectorizer and model from Azure Blob Storage or another production-ready location
-        tfidf_vectorizer = load_vectorizer_from_production()  # Implement this function
-        model = load_model_from_production()  # Implement this function
+        # Load the vectorizer from the file
+        tfidf_vectorizer = joblib.load('./models/tfidf_vectorizer.pkl')
 
         # Vectorize the preprocessed tweet
         vectorized_tweet = tfidf_vectorizer.transform([tweet])
+
+        # Load the model
+        model = joblib.load('./models/logistic_model.pkl')
 
         # Make the prediction
         prediction = model.predict(vectorized_tweet)
