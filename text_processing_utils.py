@@ -1,9 +1,10 @@
 import re
 import string
+import nltk
+
 from unidecode import unidecode
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-import spacy
 
 # Define contraction mapping
 CONTRACTION_MAP = {
@@ -132,9 +133,6 @@ CONTRACTION_MAP = {
     "you've": "you have"
 }
 
-# Load SpaCy model
-nlp = spacy.load('en_core_web_sm')
-
 def expand_contractions(text, contraction_mapping=CONTRACTION_MAP):
     contractions_pattern = re.compile('({})'.format('|'.join(contraction_mapping.keys())),
                                       flags=re.IGNORECASE | re.DOTALL)
@@ -169,13 +167,30 @@ def remove_stopwords(tokens, stopwords_set):
 def remove_short_words(tokens, min_length=2):
     return [word for word in tokens if len(word) >= min_length]
 
-# Load SpaCy model
-nlp = spacy.load('en_core_web_sm')
+# # Load SpaCy model
+# nlp = spacy.load('en_core_web_sm')
+
+# def lemmatize_text(tokens):
+#     doc = nlp(' '.join(tokens))
+#     lemmatized_text = [token.lemma_ for token in doc if token.pos_ in ['NOUN', 'VERB', 'ADV']]
+#     return lemmatized_text
 
 def lemmatize_text(tokens):
-    doc = nlp(' '.join(tokens))
-    lemmatized_text = [token.lemma_ for token in doc if token.pos_ in ['NOUN', 'VERB', 'ADV']]
-    return lemmatized_text
+  """Lemmatize a list of tokens using NLTK.
+
+  Args:
+    tokens: A list of tokens.
+
+  Returns:
+    A list of lemmatized tokens.
+  """
+
+  lemmatizer = nltk.stem.WordNetLemmatizer()
+  lemmatized_text = []
+  for token in tokens:
+    lemmatized_text.append(lemmatizer.lemmatize(token))
+  return lemmatized_text
+
 
 # Define the preprocessing function
 def preprocess_text(text):
