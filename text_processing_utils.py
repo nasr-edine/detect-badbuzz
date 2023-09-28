@@ -8,6 +8,7 @@ from nltk.corpus import stopwords
 
 nltk.download('punkt')
 nltk.download('stopwords')
+nltk.download('wordnet')
 
 # Define contraction mapping
 CONTRACTION_MAP = {
