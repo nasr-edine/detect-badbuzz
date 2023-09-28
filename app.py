@@ -8,31 +8,31 @@ app = Flask(__name__)
 # Define the route for the predictor
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Get the tweet from the request body
-    tweet = request.json['tweet']
+    try:
+        # Get the tweet from the request body
+        tweet = request.json['tweet']
 
-    # Preprocess the tweet
-    tweet = preprocess_text(tweet)
+        # Preprocess the tweet
+        tweet = preprocess_text(tweet)
 
-    # Load the vectorizer from the file
-    tfidf_vectorizer = joblib.load('./models/tfidf_vectorizer.pkl')
+        # Load the vectorizer and model from Azure Blob Storage or another production-ready location
+        tfidf_vectorizer = load_vectorizer_from_production()  # Implement this function
+        model = load_model_from_production()  # Implement this function
 
-    # Vectorize the preprocessed tweet
-    vectorized_tweet = tfidf_vectorizer.transform([tweet])
+        # Vectorize the preprocessed tweet
+        vectorized_tweet = tfidf_vectorizer.transform([tweet])
 
-    # Load the model
-    model = joblib.load('./models/logistic_model.pkl')
+        # Make the prediction
+        prediction = model.predict(vectorized_tweet)
 
-    # Make the prediction
-    prediction = model.predict(vectorized_tweet)
+        # Interpret the prediction
+        sentiment = "Positive" if prediction == 1 else "Negative"
 
-    # Interpret the prediction
-    sentiment = "Positive" if prediction == 1 else "Negative"
+        # Return the prediction as JSON
+        return jsonify({'sentiment': sentiment})
 
-    # Return the prediction as JSON
-    return jsonify({'sentiment': sentiment})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    # app.run(debug=True)
-    app.run(debug=True)  # Change the port to a different value, e.g., 5001
-    # app.run(debug=True, port=5002)
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
