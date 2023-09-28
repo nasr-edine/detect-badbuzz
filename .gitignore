@@ -1,1 +1,52 @@
-.venv
+# Python-related files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE and editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Compiled files
+*.exe
+*.dll
+*.class
+*.o
+*.so
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook specific files
+.ipynb_checkpoints/
+
+# Project-specific files and directories
+mlflow_tracking/experiments/
+mlflow_tracking/models/
+screenshots/
+
+# Environment-specific files
+*.env
+*.venv*
+*.env.*
