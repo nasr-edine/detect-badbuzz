@@ -10,8 +10,16 @@ app = Flask(__name__)
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
+        # Check if the 'tweet' key is present in the request JSON
+        if 'tweet' not in request.json:
+            return jsonify({'error': 'Missing or invalid "tweet" key in the request'}), 400
+
         # Get the tweet from the request body
         tweet = request.json['tweet']
+
+        # Check if 'tweet' is empty or None
+        if not tweet:
+            return jsonify({'error': 'Invalid tweet provided'}), 400
 
         # Preprocess the tweet
         tweet = preprocess_text(tweet)
