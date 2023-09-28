@@ -6,6 +6,8 @@ from unidecode import unidecode
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
+nltk.download('punkt')
+
 # Define contraction mapping
 CONTRACTION_MAP = {
     "ain't": "is not",

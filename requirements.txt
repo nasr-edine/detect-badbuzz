@@ -3,6 +3,5 @@ scikit-learn
 
 nltk
 unidecode
-spacy
 joblib
 flask
