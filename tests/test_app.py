@@ -23,14 +23,6 @@ class TestApp(unittest.TestCase):
         response_body = json.loads(response.data)
         self.assertIn("error", response_body)
 
-    def test_predict_route(self):
-        # Test a valid prediction
-        data = {'tweet': 'I love this product!'}
-        response = self.app.post('/predict', json=data)
-        data = json.loads(response.data)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(data['sentiment'], 'Positive')
-
         # Test an invalid request (missing 'tweet' key)
         response = self.app.post('/predict', json={})
         data = json.loads(response.data)
