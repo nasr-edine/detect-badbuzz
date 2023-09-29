@@ -41,12 +41,17 @@ def predict():
 
         # Interpret the prediction
         sentiment = "Positive" if prediction == 1 else "Negative"
+    
+        response = jsonify({'sentiment': sentiment})
+
+        # Set the Access-Control-Allow-Origin header to '*'
+        response.headers['Access-Control-Allow-Origin'] = '*'
 
         # Return the prediction as JSON
-        return jsonify({'sentiment': sentiment})
+        return response
 
     except Exception as e:
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=8001)
+    app.run(debug=False, host='0.0.0.0', port=8000)
