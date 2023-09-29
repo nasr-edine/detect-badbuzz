@@ -23,9 +23,10 @@
             const data = { "tweet": tweet };
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-
-            fetch('http://127.0.0.1:8001/predict', {
-            // fetch('https://bad-buzz-api.azurewebsites.net/predict', {
+            myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:4200')
+            // fetch('http://10.18.199.101:8000/predict', {
+            fetch('https://bad-buzz-api.azurewebsites.net/predict', {
+                // mode: 'no-cors',
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: myHeaders,
