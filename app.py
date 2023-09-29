@@ -1,5 +1,8 @@
 import os
 import joblib
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -27,17 +30,18 @@ def predict():
         # Preprocess the tweet
         tweet = preprocess_text(tweet)
 
-        # Load the vectorizer from the file
-        tfidf_vectorizer = joblib.load('./models/tfidf_vectorizer.pkl')
+        max_len = 150
+        tokenizer = Tokenizer()
 
-        # Vectorize the preprocessed tweet
-        vectorized_tweet = tfidf_vectorizer.transform([tweet])
+        text_seq = tokenizer.texts_to_sequences([tweet])
+        text_seq = pad_sequences(text_seq, maxlen=max_len)
 
         # Load the model
-        model = joblib.load('./models/logistic_model.pkl')
+        # model = joblib.load('./models/logistic_model.pkl')
+        model = joblib.load('./models/lstm_model_glove.pkl')
 
         # Make the prediction
-        prediction = model.predict(vectorized_tweet)
+        prediction = model.predict(text_seq)[0]
 
         # Interpret the prediction
         sentiment = "Positive" if prediction == 1 else "Negative"
@@ -45,7 +49,7 @@ def predict():
         response = jsonify({'sentiment': sentiment})
 
         # Set the Access-Control-Allow-Origin header to '*'
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        # response.headers['Access-Control-Allow-Origin'] = '*'
 
         # Return the prediction as JSON
         return response
