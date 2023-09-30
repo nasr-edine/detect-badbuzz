@@ -1,9 +1,12 @@
 # Machine learning libraries
 scikit-learn
-
 nltk
 unidecode
 joblib
+
+# Web framework for serving machine learning models via REST APIs
 flask
 flask-cors
+
+# Deep learning framework for building and training neural networks
 tensorflow
