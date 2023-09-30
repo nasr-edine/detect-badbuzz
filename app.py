@@ -31,7 +31,8 @@ def predict():
         tweet = preprocess_text(tweet)
 
         max_len = 150
-        tokenizer = Tokenizer()
+        # Load the tokenizer from the saved file when needed
+        tokenizer = joblib.load('./models/tokenizer.pkl')
 
         text_seq = tokenizer.texts_to_sequences([tweet])
         text_seq = pad_sequences(text_seq, maxlen=max_len)
@@ -41,10 +42,14 @@ def predict():
         model = joblib.load('./models/lstm_model_glove.pkl')
 
         # Make the prediction
-        prediction = model.predict(text_seq)[0]
+        predictions = model.predict(text_seq)
+        import numpy as np
+
+        # Assuming 'predictions' contains the predicted probabilities for each example
+        predicted_classes = np.argmax(predictions, axis=1)
 
         # Interpret the prediction
-        sentiment = "Positive" if prediction == 1 else "Negative"
+        sentiment = "Positive" if predicted_classes >= 1 else "Negative"
     
         response = jsonify({'sentiment': sentiment})
 
